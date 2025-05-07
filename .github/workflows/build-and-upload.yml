@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: hello_app
 
     steps:
       - name: Checkout repository
@@ -20,27 +17,28 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.19.5'
 
       - name: Install Android SDK dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openjdk-17-jdk unzip xz-utils zip libgl1-mesa wget tar
+          sudo apt-get install -y openjdk-17-jdk unzip xz-utils zip wget tar libgl1-mesa-glx
+        env:
+          DEBIAN_FRONTEND: noninteractive
 
       - name: Build APK
         run: flutter build apk
 
       - name: Install rclone
-        run: |
-          curl https://rclone.org/install.sh | sudo bash
+        run: curl https://rclone.org/install.sh | sudo bash
 
       - name: Restore rclone config
         run: |
-          echo "$RCLONE_CONF" | base64 -d > rclone.conf
+          echo "${RCLONE_CONF}" | base64 -d > rclone.conf
           mkdir -p ~/.config/rclone
           mv rclone.conf ~/.config/rclone/rclone.conf
 
       - name: Upload APK to Google Drive
-        run: rclone copy build/app/outputs/flutter-apk/app-release.apk googledrive:/FlutterUploads/
+        run: |
+          rclone copy build/app/outputs/flutter-apk/app-release.apk googledrive:/FlutterUploads/
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
