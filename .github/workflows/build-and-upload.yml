@@ -8,16 +8,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
- - name: Set up Flutter
-  uses: subosito/flutter-action@v2
-    with:
-      channel: dev
-      flutter-version: 3.9.0-0.0.pre
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: dev
+          flutter-version: 3.9.0-0.0.pre
 
       - name: Install Android SDK dependencies
         run: |
@@ -33,7 +32,7 @@ jobs:
 
       - name: Restore rclone config
         run: |
-          echo "$RCLONE_CONF" | base64 -d > rclone.conf
+          echo "${RCLONE_CONF}" | base64 -d > rclone.conf
           mkdir -p ~/.config/rclone
           mv rclone.conf ~/.config/rclone/rclone.conf
 
