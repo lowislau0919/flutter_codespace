@@ -27,6 +27,7 @@ jobs:
 
       - name: Build APK
         run: flutter build apk
+        working-directory: hello_app
 
       - name: Install rclone
         run: curl https://rclone.org/install.sh | sudo bash
@@ -39,6 +40,6 @@ jobs:
 
       - name: Upload APK to Google Drive
         run: |
-          rclone copy build/app/outputs/flutter-apk/app-release.apk googledrive:/FlutterUploads/
+          rclone copy hello_app/build/app/outputs/flutter-apk/app-release.apk googledrive:/FlutterUploads/
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
