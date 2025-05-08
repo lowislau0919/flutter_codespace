@@ -25,9 +25,6 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
 
-      - name: List project files
-        run: ls -la
-
       - name: Build APK
         run: flutter build apk
 
