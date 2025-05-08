@@ -40,6 +40,7 @@ jobs:
 
       - name: Upload APK to Google Drive
         run: |
-          rclone copy hello_app/build/app/outputs/flutter-apk/app-release.apk googledrive:/FlutterUploads/
+          rclone copy build/app/outputs/flutter-apk/app-release.apk googledrive:/FlutterUploads/
         env:
           RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        working-directory: hello_app
